@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan de Estudio · 普通话 para Papá</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --ink: #1c1c1c;
+    --paper: #f5f2ee;
+    --chinese: #b5451b;
+    --chinese-light: #f2e0d8;
+    --english: #2e6e4e;
+    --english-light: #d8eee3;
+    --muted: #999;
+    --border: #ddd8ce;
+    --card-bg: #faf8f5;
+    --gold: #c9a84c;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    padding: 3rem 1.5rem 2rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hanzi-bg {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 9rem;
+    font-weight: 700;
+    color: var(--chinese);
+    opacity: 0.04;
+    letter-spacing: 0.2em;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+  }
+
+  header h1 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(1.6rem, 5vw, 2.6rem);
+    font-weight: 400;
+    line-height: 1.2;
+    position: relative;
+    color: var(--ink);
+  }
+
+  header h1 .zh { color: var(--chinese); }
+
+  .header-sub {
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+    position: relative;
+  }
+
+  .tone-bar {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.2rem;
+    position: relative;
+  }
+
+  .tone-chip {
+    font-size: 0.72rem;
+    padding: 0.25rem 0.7rem;
+    border-radius: 2px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .tone-chip span { color: var(--chinese); font-weight: 500; }
+
+  /* TABS */
+  nav.tabs {
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid var(--border);
+    padding: 1.25rem 1rem 0;
+    gap: 0;
+    overflow-x: auto;
+  }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .tab-btn.active { color: var(--chinese); border-bottom-color: var(--chinese); }
+
+  /* LAYOUT */
+  .content { max-width: 720px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* PHASE LABEL */
+  .phase-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+    margin-top: 2.2rem;
+  }
+  .phase-label:first-child { margin-top: 0; }
+
+  /* DAY CARDS */
+  .day-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    margin-bottom: 0.55rem;
+    overflow: hidden;
+  }
+
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.75rem 1.1rem;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .day-name {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    width: 75px;
+    flex-shrink: 0;
+    color: var(--ink);
+  }
+
+  .day-pills { display: flex; gap: 0.35rem; flex-wrap: wrap; flex: 1; }
+
+  .pill {
+    font-size: 0.68rem;
+    padding: 0.18rem 0.5rem;
+    border-radius: 20px;
+    font-weight: 400;
+  }
+
+  .pill-zh { background: var(--chinese-light); color: var(--chinese); }
+  .pill-en { background: var(--english-light); color: var(--english); }
+  .pill-rest { background: #ece9e3; color: var(--muted); }
+
+  .day-toggle { font-size: 0.68rem; color: var(--muted); flex-shrink: 0; }
+
+  .day-body {
+    display: none;
+    padding: 0 1.1rem 1rem;
+    border-top: 1px solid var(--border);
+  }
+  .day-body.open { display: block; }
+
+  .session { margin-top: 0.9rem; }
+
+  .session-title {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+    color: var(--chinese);
+  }
+
+  .session-title.en { color: var(--english); }
+
+  .session ul { list-style: none; }
+
+  .session ul li {
+    font-size: 0.82rem;
+    padding: 0.18rem 0 0.18rem 1rem;
+    position: relative;
+    color: #333;
+  }
+
+  .session ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--border);
+    font-size: 0.72rem;
+  }
+
+  .session-note {
+    font-size: 0.73rem;
+    color: var(--muted);
+    margin-top: 0.45rem;
+    font-style: italic;
+  }
+
+  /* TONE BOX — signature element */
+  .tone-box {
+    background: var(--ink);
+    color: #fff;
+    border-radius: 2px;
+    padding: 1.1rem 1.25rem;
+    margin: 1.25rem 0;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .tone-box-icon {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .tone-box-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+  }
+
+  .tone-box p { font-size: 0.82rem; color: #ccc; line-height: 1.5; }
+
+  /* TIP BOX */
+  .tip-box {
+    border-left: 3px solid var(--border);
+    padding: 0.7rem 1rem;
+    margin: 1.1rem 0;
+    background: var(--card-bg);
+  }
+
+  .tip-box.zh { border-left-color: var(--chinese); }
+  .tip-box.en { border-left-color: var(--english); }
+
+  .tip-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+  }
+
+  .tip-box p { font-size: 0.82rem; color: #444; }
+
+  /* PINYIN TABLE */
+  .pinyin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 0.4rem;
+    margin: 0.75rem 0;
+  }
+
+  .pinyin-cell {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 0.5rem 0.6rem;
+    text-align: center;
+  }
+
+  .pinyin-cell .zh-char {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.3rem;
+    display: block;
+    color: var(--chinese);
+    line-height: 1.2;
+  }
+
+  .pinyin-cell .pin { font-size: 0.68rem; color: var(--muted); }
+  .pinyin-cell .es { font-size: 0.65rem; color: #666; margin-top: 0.1rem; }
+
+  /* VOCAB TABLE */
+  .vocab-block { margin-bottom: 1.75rem; }
+
+  .vocab-block h4 {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.4rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .vocab-table { width: 100%; border-collapse: collapse; font-size: 0.81rem; }
+  .vocab-table td { padding: 0.32rem 0.5rem; border-bottom: 1px solid #f0ece3; }
+  .vocab-table tr:last-child td { border-bottom: none; }
+  .vocab-table td:first-child { width: 30%; color: #555; }
+  .vocab-table td:nth-child(2) { width: 22%; font-family: 'Noto Serif SC', serif; color: var(--chinese); font-size: 0.95rem; }
+  .vocab-table td:nth-child(3) { width: 23%; color: var(--muted); font-size: 0.75rem; }
+  .vocab-table td:nth-child(4) { color: #555; font-size: 0.78rem; }
+
+  /* RESOURCE CARDS */
+  .resource-section { margin-bottom: 2rem; }
+
+  .resource-section h3 {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 400;
+    font-size: 1.15rem;
+    margin-bottom: 1rem;
+    color: var(--ink);
+  }
+
+  .resource-section h3 span { color: var(--chinese); }
+
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+    gap: 0.7rem;
+  }
+
+  .resource-card {
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 0.85rem 1rem;
+    background: var(--card-bg);
+  }
+
+  .resource-tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.28rem;
+  }
+
+  .resource-name { font-size: 0.86rem; font-weight: 500; margin-bottom: 0.22rem; }
+  .resource-desc { font-size: 0.74rem; color: var(--muted); line-height: 1.4; }
+
+  /* TRACKER */
+  .tracker-week { margin-bottom: 1.5rem; }
+  .tracker-week-label { font-size: 0.68rem; color: var(--muted); margin-bottom: 0.45rem; letter-spacing: 0.06em; }
+
+  .tracker-row {
+    display: grid;
+    grid-template-columns: 55px repeat(7, 1fr);
+    gap: 0.3rem;
+    align-items: center;
+    margin-bottom: 0.3rem;
+  }
+
+  .tracker-idioma { font-size: 0.66rem; color: var(--muted); }
+
+  .tracker-dot {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    cursor: pointer;
+    background: white;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  .tracker-dot.done { background: var(--chinese); border-color: var(--chinese); }
+
+  .progress-bar-wrap {
+    background: var(--border);
+    border-radius: 2px;
+    height: 4px;
+    margin: 1rem 0 0.4rem;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--chinese);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  .progress-summary { font-size: 0.78rem; color: var(--muted); }
+
+  hr.divider { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+
+  @media (max-width: 480px) {
+    .tab-btn { padding: 0.55rem 0.8rem; font-size: 0.76rem; }
+    .tone-box { flex-direction: column; gap: 0.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hanzi-bg">爸爸</div>
+  <p class="eyebrow">Plan de papá · Crianza multilingüe</p>
+  <h1>Mandarín <span class="zh">普通话</span><br>para hablarles a mis hijos</h1>
+  <p class="header-sub">17 semanas · hasta semana 27 de embarazo · 35–45 min al día</p>
+  <div class="tone-bar">
+    <div class="tone-chip"><span>ā á ǎ à</span> · 4 tonos</div>
+    <div class="tone-chip"><span>汉字</span> · caracteres</div>
+    <div class="tone-chip"><span>pīnyīn</span> · romanización</div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" onclick="showTab('plan', this)">Plan semanal</button>
+  <button class="tab-btn" onclick="showTab('tonos', this)">Los 4 tonos</button>
+  <button class="tab-btn" onclick="showTab('recursos', this)">Recursos</button>
+  <button class="tab-btn" onclick="showTab('vocab', this)">Vocabulario bebé</button>
+  <button class="tab-btn" onclick="showTab('progreso', this)">Mi progreso</button>
+</nav>
+
+<div class="content">
+
+  <!-- PLAN SEMANAL -->
+  <div class="panel active" id="panel-plan">
+
+    <p class="phase-label">Semanas 1–2 · Pinyin y los 4 tonos</p>
+
+    <div class="tone-box">
+      <div class="tone-box-icon">声</div>
+      <div>
+        <div class="tone-box-label">Prioridad absoluta del mes 1</div>
+        <p>El mandarín es tonal: la misma sílaba con distinto tono = palabra diferente. mā (妈 mamá) · má (麻 cáñamo) · mǎ (马 caballo) · mà (骂 insultar). Antes de aprender vocabulario, hay que dominar los tonos. Todo lo demás se construye sobre esto.</p>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Lunes</span>
+        <div class="day-pills">
+          <span class="pill pill-zh">Pinyin · vocales</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">🇨🇳 Mandarín · 40 min</div>
+          <ul>
+            <li>Pinyin: vocales simples a e i o u ü — pronunciación exacta</li>
+            <li>Tono 1 (plano alto): mā, bā, tā — practicar hasta sonar estable</li>
+            <li>Tono 2 (ascendente): má, bá — como pregunta en español pero más agudo</li>
+            <li>App: Yoyo Chinese "Pinyin Chart" — escuchar cada sílaba con audio nativo</li>
+          </ul>
+          <p class="session-note">El pinyin es la clave de entrada al mandarín — con él puedes escribir cualquier carácter en el teclado</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Martes</span>
+        <div class="day-pills">
+          <span class="pill pill-zh">Tonos 3 y 4</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">🇨🇳 Mandarín · 40 min</div>
+          <ul>
+            <li>Tono 3 (bajo-descendente-ascendente): mǎ — el más difícil, no apresurarlo</li>
+            <li>Tono 4 (descendente fuerte): mà — como cuando uno da una orden en español</li>
+            <li>Tono neutro (sin marca): 吗 ma (partícula de pregunta) — corto, sin énfasis</li>
+            <li>Ejercicio: decir "mā má mǎ mà ma" 10 veces seguidas, grabarse y escuchar</li>
+          </ul>
+          <p class="session-note">Grabarse es incómodo pero es la forma más rápida de corregir la propia pronunciación</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Miércoles</span>
+        <div class="day-pills">
+          <span class="pill pill-zh">Primera frase real</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">🇨🇳 Mandarín · 40 min</div>
+          <ul>
+            <li>Primera frase: 我爱你 (wǒ ài nǐ) — "te quiero" — la más importante</li>
+            <li>爸爸来了 (bàba lái le) — "papá llegó" — tu presentación diaria</li>
+            <li>宝宝 (bǎobao) — "bebé/tesoro" — el apelativo más usado en China con bebés</li>
+            <li>Practicar con entonación suave y musical, como se le habla a un recién nacido</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Jueves</span>
+        <div class="day-pills">
+          <span class="pill pill-zh">Consonantes pinyin</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">🇨🇳 Mandarín · 40 min</div>
+          <ul>
+            <li>Consonantes problemáticas para hispanohablantes: x (entre s y sh), q (ch suave), zh (j fuerte)</li>
+            <li>r en mandarín ≠ r en español — es retroflexa, se hace con la lengua enrollada</li>
+            <li>Ejercicio: leer tabla de pinyin completa en voz alta (disponible en Yoyo Chinese)</li>
+            <li>Flashcards: 10 sílabas nuevas con sus tonos correctos</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Viernes</span>
+        <div class="day-pills">
+          <span class="pill pill-zh">Canciones · input</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">🇨🇳 Mandarín · 45 min</div>
+          <ul>
+            <li>Canción infantil: 小星星 (Xiǎo xīngxīng) — "Brilla brilla pequeña estrella" en chino</li>
+            <li>Aprender letra + identificar los tonos de cada palabra</li>
+            <li>YouTube: "Super Simple Songs Chinese" o "小猪佩奇" (Peppa Pig en mandarín)</li>
+          </ul>
+          <p class="session-note">Los viernes son de input musical — el oído necesita escuchar tonos naturales, no solo estudiarlos</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Sáb–Dom</span>
+        <div class="day-pills"><span class="pill pill-rest">Inmersión libre</span></div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">Sábado · input</div>
+          <ul>
+            <li>Ver 小猪佩奇 (Peppa Pig chino) o 汪汪队 (Paw Patrol chino) — 20 min</li>
+            <li>No estudiar — solo escuchar y habituarse al ritmo y sonidos del mandarín</li>
+          </ul>
+        </div>
+        <div class="session">
+          <div class="session-title">Domingo · repaso</div>
+          <ul>
+            <li>Repasar los 4 tonos con cualquier palabra aprendida esta semana</li>
+            <li>Escribir en papel: 我爱你 宝宝 爸爸 — primera práctica de caracteres</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <p class="phase-label">Semanas 3–5 · Mes 1–2 · Primeros caracteres y rutinas</p>
+
+    <div class="tip-box zh">
+      <div class="tip-label">Por qué empezar ya con caracteres</div>
+      <p>A diferencia del japonés o coreano, en chino no hay alfabeto — los caracteres son el sistema de escritura. Pero los primeros 50 caracteres son muy visuales y lógicos (日 sol, 月 luna, 山 montaña, 水 agua). Aprenderlos desde el inicio evita depender solo del pinyin y acelera el reconocimiento.</p>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Lunes</span>
+        <div class="day-pills">
+          <span class="pill pill-zh">Radicales básicos</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">🇨🇳 Mandarín · 40 min</div>
+          <ul>
+            <li>Radicales pictográficos: 日(sol) 月(luna) 山(montaña) 水(agua) 火(fuego) 木(árbol)</li>
+            <li>Escritura a mano con orden de trazos correcto — un carácter mal trazado cuesta el doble corregirlo</li>
+            <li>App: Skritter o Pleco para orden de trazos animado</li>
+            <li>Memorizar pronunciación + tono de cada uno</li>
+          </ul>
+          <p class="session-note">Los radicales son los "bloques" de casi todos los caracteres — aprenderlos ahora multiplica el aprendizaje después</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Martes</span>
+        <div class="day-pills">
+          <span class="pill pill-zh">Rutina de mañana</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">🇨🇳 Mandarín · 40 min</div>
+          <ul>
+            <li>起床了 (qǐchuáng le) — "a levantarse"</li>
+            <li>早上好 (zǎoshang hǎo) — "buenos días" — saludo matutino con bebé</li>
+            <li>宝宝醒了吗？(bǎobao xǐng le ma?) — "¿ya despertó el bebé?"</li>
+            <li>换尿布 (huàn niàobù) — "cambiar pañal" — vocabulario práctico de crianza</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Miércoles</span>
+        <div class="day-pills">
+          <span class="pill pill-zh">Alimentación</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">🇨🇳 Mandarín · 40 min</div>
+          <ul>
+            <li>吃饭了 (chīfàn le) — "hora de comer"</li>
+            <li>喝奶 (hē nǎi) — "tomar leche" (materna o fórmula)</li>
+            <li>饿了吗？(è le ma?) — "¿tienes hambre?"</li>
+            <li>张嘴 (zhāng zuǐ) — "abre la boca" — para cuando empiece la alimentación complementaria</li>
+            <li>好吃吗？(hǎochī ma?) — "¿está rico?"</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Jueves</span>
+        <div class="day-pills">
+          <span class="pill pill-zh">Caracteres · bloque 2</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">🇨🇳 Mandarín · 40 min</div>
+          <ul>
+            <li>人(rén persona) 大(dà grande) 小(xiǎo pequeño) 上(shàng arriba) 下(xià abajo)</li>
+            <li>Frases: 宝宝大了 (el bebé creció) · 好小好小 (tan chiquitito)</li>
+            <li>Repaso Anki: todos los caracteres aprendidos hasta ahora</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Viernes</span>
+        <div class="day-pills">
+          <span class="pill pill-zh">Cuento en voz alta</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">🇨🇳 Mandarín · 45 min</div>
+          <ul>
+            <li>Escuchar y repetir: "三只小猪" (Los tres cerditos en chino) — versión YouTube narrada</li>
+            <li>No necesitas entender todo — enfocarte en el ritmo, los tonos, la entonación narrativa</li>
+            <li>Practicar narrar 3 oraciones simples del cuento en voz alta</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Sáb–Dom</span>
+        <div class="day-pills"><span class="pill pill-rest">Repaso + descanso</span></div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">Fin de semana</div>
+          <ul>
+            <li>Sábado: cambiar el teléfono a chino simplificado por el día — inmersión pasiva</li>
+            <li>Domingo: repasar flashcards (15 min) + narrar la rutina matutina del bebé imaginario en mandarín</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <p class="phase-label">Semanas 6–7 · Mes 3 · Gramática básica y frases completas</p>
+
+    <div class="tip-box zh">
+      <div class="tip-label">Buenas noticias sobre la gramática china</div>
+      <p>El mandarín tiene gramática muy simple comparado con el español: no hay conjugaciones de verbos, no hay género gramatical, no hay plural morfológico. La estructura es Sujeto-Verbo-Objeto, igual que en inglés. Lo difícil ya lo trabajaste: los tonos.</p>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Lunes</span>
+        <div class="day-pills">
+          <span class="pill pill-zh">Pronombres</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">🇨🇳 Mandarín · 40 min</div>
+          <ul>
+            <li>我(wǒ yo) 你(nǐ tú) 他/她(tā él/ella) 我们(wǒmen nosotros)</li>
+            <li>宝宝(bǎobao) como sustituto del pronombre — los padres chinos usan el nombre del bebé en vez de "tú"</li>
+            <li>Frases: 爸爸爱宝宝 (papá quiere al bebé) · 宝宝真棒 (el bebé es increíble)</li>
+          </ul>
+          <p class="session-note">En el habla infantil china, "宝宝" reemplaza al pronombre — es más cariñoso y natural</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Martes</span>
+        <div class="day-pills">
+          <span class="pill pill-zh">Colores y formas</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">🇨🇳 Mandarín · 40 min</div>
+          <ul>
+            <li>红色(hóng rojo) 蓝色(lán azul) 黄色(huáng amarillo) 绿色(lǜ verde) 白色(bái blanco) 黑色(hēi negro)</li>
+            <li>圆形(yuán círculo) 方形(fāng cuadrado) 三角形(sānjiǎo triángulo)</li>
+            <li>Juego: señalar objetos del cuarto y decir el color en mandarín</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Miércoles</span>
+        <div class="day-pills">
+          <span class="pill pill-zh">Frases de consuelo</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">🇨🇳 Mandarín · 40 min</div>
+          <ul>
+            <li>没事的 (méishì de) — "no pasa nada / está bien"</li>
+            <li>爸爸在这里 (bàba zài zhèlǐ) — "papá está aquí"</li>
+            <li>不哭了 (bù kū le) — "no llores más"</li>
+            <li>哪里疼？(nǎlǐ téng?) — "¿dónde te duele?"</li>
+            <li>Practicar con voz suave y baja — el tono emocional importa tanto como los tonos lingüísticos</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Jueves</span>
+        <div class="day-pills">
+          <span class="pill pill-zh">Números 1–20</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">🇨🇳 Mandarín · 40 min</div>
+          <ul>
+            <li>一二三四五六七八九十 (yī èr sān sì wǔ liù qī bā jiǔ shí)</li>
+            <li>Hasta 20: 十一 (11) 十二 (12)... veinte: 二十 (èrshí)</li>
+            <li>Canción: 数数歌 — canción infantil de contar en chino</li>
+            <li>Uso práctico: contar deditos al bebé — 一个手指头，一个手指头</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Viernes</span>
+        <div class="day-pills">
+          <span class="pill pill-zh">Cuento en voz alta</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">🇨🇳 Mandarín · 45 min</div>
+          <ul>
+            <li>Leer "小红帽" (Caperucita Roja en chino) — versión simplificada YouTube</li>
+            <li>Grabarse narrando 5 oraciones del cuento</li>
+            <li>Comparar la grabación con la del mes pasado — ¿los tonos suenan más naturales?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <p class="phase-label">Semanas 8–10 · Mes 4 · Fluidez de rutina completa</p>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Lunes</span>
+        <div class="day-pills">
+          <span class="pill pill-zh">Rutina de baño</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">🇨🇳 Mandarín · 40 min</div>
+          <ul>
+            <li>洗澡了 (xǐzǎo le) — "hora del baño"</li>
+            <li>水温怎么样？(shuǐ wēn zěnmeyàng?) — "¿cómo está la temperatura del agua?"</li>
+            <li>洗头发 (xǐ tóufa) lavar cabello · 洗小脚 (xǐ xiǎo jiǎo) lavar piececitos</li>
+            <li>Narrar en voz alta toda la secuencia del baño completa</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Martes</span>
+        <div class="day-pills">
+          <span class="pill pill-zh">Rutina de sueño</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">🇨🇳 Mandarín · 40 min</div>
+          <ul>
+            <li>睡觉了 (shuìjiào le) — "hora de dormir"</li>
+            <li>困了吗？(kùn le ma?) — "¿tienes sueño?"</li>
+            <li>做个好梦 (zuò gè hǎo mèng) — "que tengas dulces sueños"</li>
+            <li>Canción de cuna: 摇篮曲 (Yáolán qǔ) — la más clásica del mandarín</li>
+            <li>Aprender letra completa y practicar con melodía suave</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Miércoles</span>
+        <div class="day-pills">
+          <span class="pill pill-zh">Juego y exploración</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">🇨🇳 Mandarín · 40 min</div>
+          <ul>
+            <li>一起玩吧！(yīqǐ wán ba) — "¡juguemos juntos!"</li>
+            <li>这是什么？(zhè shì shénme?) — "¿qué es esto?" — pregunta más usada con bebés</li>
+            <li>躲猫猫 (duō māomāo) — "cucú" en chino</li>
+            <li>Vocabulario: 玩具(juguete) 球(pelota) 书(libro) 积木(bloques) 布娃娃(muñeca de tela)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Jue–Vie</span>
+        <div class="day-pills">
+          <span class="pill pill-zh">Simulacro de día</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">🇨🇳 Jueves + Viernes · 45 min c/u</div>
+          <ul>
+            <li>Narrar en voz alta un día completo del bebé solo en mandarín — sin pausas largas</li>
+            <li>Despertar → desayuno → baño → paseo → juego → siesta → cena → dormir</li>
+            <li>Jueves: solo hablar. Viernes: grabarse y escuchar</li>
+            <li>Anotar las palabras que faltaron — vocabulario para la semana siguiente</li>
+          </ul>
+          <p class="session-note">Este es el ejercicio más honesto de todo el plan — si puedes narrar el día, estás listo para cuando lleguen</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Sáb–Dom</span>
+        <div class="day-pills"><span class="pill pill-rest">Input cultural</span></div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">Fin de semana libre</div>
+          <ul>
+            <li>Ver 小猪佩奇 completo — ya deberías entender más del 30–40%</li>
+            <li>Escuchar playlist de canciones infantiles chinas mientras hacen otras cosas</li>
+            <li>Domingo: repaso Anki (10 min) + escribir 5 frases nuevas para el bebé</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <p class="phase-label">Semanas 11–17 · Mes 5 · Consolidación y cierre</p>
+
+    <div class="tone-box">
+      <div class="tone-box-icon">心</div>
+      <div>
+        <div class="tone-box-label">Contexto de embarazo · semanas finales</div>
+        <p>Este tramo coincide con la semana 22–27 del embarazo de Jo. El plan se vuelve más flexible: si hay hospitalización anticipada, el mandarín que aprendiste ya está en ti. Tus bebés lo escucharán desde el primer contacto.</p>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Lunes</span>
+        <div class="day-pills">
+          <span class="pill pill-zh">Vocabulario UCIN</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">🇨🇳 Mandarín · 35 min</div>
+          <ul>
+            <li>保温箱 (bǎowēn xiāng) — incubadora</li>
+            <li>爸爸在这里陪你 (bàba zài zhèlǐ péi nǐ) — "papá está aquí contigo"</li>
+            <li>你很勇敢 (nǐ hěn yǒnggǎn) — "eres muy valiente"</li>
+            <li>爸爸好爱你 (bàba hǎo ài nǐ) — "papá te quiere mucho"</li>
+            <li>你会越来越好的 (nǐ huì yuèláiyuè hǎo de) — "cada día estarás mejor"</li>
+          </ul>
+          <p class="session-note">Estas frases pueden ser las primeras que escuchen tus hijos. Practícalas hasta que salgan naturales</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Mar–Jue</span>
+        <div class="day-pills">
+          <span class="pill pill-zh">Consolidación</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">🇨🇳 Martes · repaso global</div>
+          <ul>
+            <li>Repasar todo el vocabulario de rutinas en Anki — mínimo 50 tarjetas</li>
+            <li>Identificar qué 10 frases usarías más en el primer mes con bebés</li>
+          </ul>
+        </div>
+        <div class="session">
+          <div class="session-title">🇨🇳 Miércoles · canciones</div>
+          <ul>
+            <li>Practicar de memoria: 小星星 + 摇篮曲 + 数数歌</li>
+            <li>Cantarlas en voz alta como si ya estuvieras en la UCIN</li>
+          </ul>
+        </div>
+        <div class="session">
+          <div class="session-title">🇨🇳 Jueves · carta</div>
+          <ul>
+            <li>Escribir una carta corta a tus bebés en mandarín — lo que quieres contarles</li>
+            <li>Incluir al menos 10 caracteres aprendidos</li>
+            <li>Leerla en voz alta, con todos los tonos correctos</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Sáb–Dom</span>
+        <div class="day-pills"><span class="pill pill-rest">Cierre del plan</span></div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title">Semanas 13–17 · ritmo libre</div>
+          <ul>
+            <li>Anki diario (10 min) + input pasivo (canciones, Peppa Pig chino)</li>
+            <li>Si la hospitalización llega antes — el mandarín ya está incorporado</li>
+            <li>Lo que aprendas no se borra: tus hijos lo escucharán desde el primer día</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- LOS 4 TONOS -->
+  <div class="panel" id="panel-tonos">
+
+    <div class="tone-box">
+      <div class="tone-box-icon">声调</div>
+      <div>
+        <div class="tone-box-label">El desafío central del mandarín</div>
+        <p>Los 4 tonos son lo que más cuesta a hispanohablantes. No son opcionales — un tono equivocado cambia la palabra completa. La buena noticia: con 2–3 semanas de práctica diaria el oído se calibra y se vuelve automático.</p>
+      </div>
+    </div>
+
+    <div class="vocab-block">
+      <h4>Los 4 tonos con el ejemplo clásico</h4>
+      <table class="vocab-table">
+        <tr><td>Tono</td><td>妈</td><td>Pinyin</td><td>Significado / cómo suena</td></tr>
+        <tr><td>1º · plano alto</td><td>妈</td><td>mā</td><td>mamá — nota alta sostenida, como cantar "mi"</td></tr>
+        <tr><td>2º · ascendente</td><td>麻</td><td>má</td><td>cáñamo — sube, como preguntar "¿qué?"</td></tr>
+        <tr><td>3º · bajo-curvo</td><td>马</td><td>mǎ</td><td>caballo — baja y sube, el más difícil</td></tr>
+        <tr><td>4º · descendente</td><td>骂</td><td>mà</td><td>insultar — baja fuerte, como dar una orden</td></tr>
+        <tr><td>Neutro</td><td>吗</td><td>ma</td><td>partícula de pregunta — corto, sin énfasis</td></tr>
+      </table>
+    </div>
+
+    <div class="vocab-block">
+      <h4>Palabras de crianza con sus tonos marcados</h4>
+      <div class="pinyin-grid">
+        <div class="pinyin-cell"><span class="zh-char">宝宝</span><span class="pin">bǎobao</span><span class="es">bebé / tesoro</span></div>
+        <div class="pinyin-cell"><span class="zh-char">爸爸</span><span class="pin">bàba</span><span class="es">papá</span></div>
+        <div class="pinyin-cell"><span class="zh-char">妈妈</span><span class="pin">māma</span><span class="es">mamá</span></div>
+        <div class="pinyin-cell"><span class="zh-char">睡觉</span><span class="pin">shuìjiào</span><span class="es">dormir</span></div>
+        <div class="pinyin-cell"><span class="zh-char">吃饭</span><span class="pin">chīfàn</span><span class="es">comer</span></div>
+        <div class="pinyin-cell"><span class="zh-char">喝水</span><span class="pin">hēshuǐ</span><span class="es">beber agua</span></div>
+        <div class="pinyin-cell"><span class="zh-char">玩耍</span><span class="pin">wánshuǎ</span><span class="es">jugar</span></div>
+        <div class="pinyin-cell"><span class="zh-char">哭</span><span class="pin">kū</span><span class="es">llorar</span></div>
+        <div class="pinyin-cell"><span class="zh-char">笑</span><span class="pin">xiào</span><span class="es">reír</span></div>
+        <div class="pinyin-cell"><span class="zh-char">抱抱</span><span class="pin">bàobào</span><span class="es">abrazo</span></div>
+        <div class="pinyin-cell"><span class="zh-char">亲亲</span><span class="pin">qīnqīn</span><span class="es">besito</span></div>
+        <div class="pinyin-cell"><span class="zh-char">乖</span><span class="pin">guāi</span><span class="es">portarse bien</span></div>
+      </div>
+    </div>
+
+    <div class="tip-box zh">
+      <div class="tip-label">Truco para el 3er tono</div>
+      <p>El tercer tono (mǎ) en conversación rápida casi nunca baja y vuelve a subir completamente — suena más como un tono bajo-plano. Solo se pronuncia completo cuando hablas despacio o con énfasis. Esto es normal y no es un error.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-label">Dos tonos 3 seguidos</div>
+      <p>Cuando hay dos tercer tono seguidos (3+3), el primero se convierte en segundo tono. Ejemplo: 你好 (nǐ hǎo) se pronuncia "ní hǎo". Esto pasa automáticamente en el habla natural — no hay que pensarlo, solo escuchar muchos ejemplos.</p>
+    </div>
+
+  </div>
+
+  <!-- RECURSOS -->
+  <div class="panel" id="panel-recursos">
+
+    <div class="resource-section">
+      <h3><span>普通话</span> · Recursos Mandarín</h3>
+      <div class="resource-grid">
+
+        <div class="resource-card">
+          <div class="resource-tag">YouTube · Curso</div>
+          <div class="resource-name">Yoyo Chinese</div>
+          <div class="resource-desc">La mejor intro al mandarín para anglohablantes/hispanohablantes. Yanyang explica los tonos y el pinyin mejor que nadie.</div>
+        </div>
+
+        <div class="resource-card">
+          <div class="resource-tag">App · Caracteres</div>
+          <div class="resource-name">Pleco</div>
+          <div class="resource-desc">Diccionario + trazos de caracteres animados. Gratis. Esencial para cualquier estudiante de chino.</div>
+        </div>
+
+        <div class="resource-card">
+          <div class="resource-tag">App · Escritura</div>
+          <div class="resource-name">Skritter</div>
+          <div class="resource-desc">Práctica de escritura de caracteres con orden de trazos. Reconoce errores en tiempo real. ~10 USD/mes.</div>
+        </div>
+
+        <div class="resource-card">
+          <div class="resource-tag">App · Flashcards</div>
+          <div class="resource-name">Anki + mazo HSK1</div>
+          <div class="resource-desc">Descargar el mazo gratuito "HSK 1 Vocabulary" — 150 palabras que cubren el 80% del vocabulario infantil básico.</div>
+        </div>
+
+        <div class="resource-card">
+          <div class="resource-tag">YouTube · Infantil</div>
+          <div class="resource-name">小猪佩奇 (Peppa Pig)</div>
+          <div class="resource-desc">Peppa Pig doblada al mandarín — lenguaje sencillo, situaciones cotidianas, perfecta para papás principiantes.</div>
+        </div>
+
+        <div class="resource-card">
+          <div class="resource-tag">YouTube · Canciones</div>
+          <div class="resource-name">Super Simple Chinese</div>
+          <div class="resource-desc">Canciones infantiles clásicas en mandarín con animación. Las mismas que tus hijos verán cuando crezcan.</div>
+        </div>
+
+        <div class="resource-card">
+          <div class="resource-tag">Podcast</div>
+          <div class="resource-name">ChinesePod · Newbie</div>
+          <div class="resource-desc">Lecciones en audio nivel principiante, con explicaciones en español/inglés. Para escuchar durante el día.</div>
+        </div>
+
+        <div class="resource-card">
+          <div class="resource-tag">App</div>
+          <div class="resource-name">HelloChinese</div>
+          <div class="resource-desc">Mejor que Duolingo para mandarín — explica los tonos correctamente y tiene más contexto cultural.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="tip-box zh">
+      <div class="tip-label">Por qué HelloChinese en vez de Duolingo</div>
+      <p>Duolingo chino tiene el problema de no enfatizar suficientemente los tonos, que son lo más crítico. HelloChinese fue diseñado específicamente para el mandarín y tiene mejor sistema de práctica de pronunciación tonal.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-label">Consejo de entorno</div>
+      <p>Cambiar el teléfono a chino simplificado por semanas alternas es una de las formas más potentes de exposición pasiva — el cerebro empieza a reconocer caracteres por frecuencia sin esfuerzo consciente.</p>
+    </div>
+
+  </div>
+
+  <!-- VOCABULARIO BEBÉ -->
+  <div class="panel" id="panel-vocab">
+
+    <div class="tip-box zh">
+      <div class="tip-label">Cómo usar esta sección</div>
+      <p>Todo el vocabulario incluye pinyin con tonos marcados. Aprende primero el sonido, luego el carácter. Para buscar la pronunciación de cualquier carácter, escríbelo en Pleco.</p>
+    </div>
+
+    <div class="vocab-block">
+      <h4>Rutinas diarias</h4>
+      <table class="vocab-table">
+        <tr><td>Español</td><td>汉字</td><td>Pinyin</td><td>Nota</td></tr>
+        <tr><td>Vamos a comer</td><td>吃饭了</td><td>chīfàn le</td><td>le = acción inminente</td></tr>
+        <tr><td>Hora de dormir</td><td>睡觉了</td><td>shuìjiào le</td><td></td></tr>
+        <tr><td>Ven aquí</td><td>过来</td><td>guòlái</td><td>lit. "pasa a venir"</td></tr>
+        <tr><td>Cambiar pañal</td><td>换尿布</td><td>huàn niàobù</td><td></td></tr>
+        <tr><td>Hora del baño</td><td>洗澡了</td><td>xǐzǎo le</td><td></td></tr>
+        <tr><td>Vamos a salir</td><td>出去了</td><td>chūqù le</td><td></td></tr>
+        <tr><td>¿Tienes hambre?</td><td>饿了吗？</td><td>è le ma?</td><td></td></tr>
+        <tr><td>¿Tienes sueño?</td><td>困了吗？</td><td>kùn le ma?</td><td></td></tr>
+        <tr><td>Te quiero mucho</td><td>爸爸爱你</td><td>bàba ài nǐ</td><td>papá te quiere</td></tr>
+        <tr><td>Bien hecho</td><td>真棒！</td><td>zhēn bàng!</td><td>muy expresivo</td></tr>
+        <tr><td>No hagas eso</td><td>不可以</td><td>bù kěyǐ</td><td>más suave que 不行</td></tr>
+        <tr><td>Dulces sueños</td><td>做好梦</td><td>zuò hǎo mèng</td><td></td></tr>
+      </table>
+    </div>
+
+    <div class="vocab-block">
+      <h4>Partes del cuerpo</h4>
+      <table class="vocab-table">
+        <tr><td>Español</td><td>汉字</td><td>Pinyin</td><td>Lenguaje bebé</td></tr>
+        <tr><td>Cabeza</td><td>头</td><td>tóu</td><td>大头 (cabezota)</td></tr>
+        <tr><td>Ojos</td><td>眼睛</td><td>yǎnjīng</td><td>眼睛看 (mira con los ojos)</td></tr>
+        <tr><td>Nariz</td><td>鼻子</td><td>bízi</td><td></td></tr>
+        <tr><td>Boca</td><td>嘴巴</td><td>zuǐba</td><td>张嘴 (abre la boca)</td></tr>
+        <tr><td>Orejas</td><td>耳朵</td><td>ěrduo</td><td></td></tr>
+        <tr><td>Manos</td><td>手</td><td>shǒu</td><td>小手 (manitas)</td></tr>
+        <tr><td>Piececitos</td><td>小脚</td><td>xiǎo jiǎo</td><td>小脚丫 (muy cariñoso)</td></tr>
+        <tr><td>Barriga</td><td>肚子</td><td>dùzi</td><td>小肚子 (barriguita)</td></tr>
+      </table>
+    </div>
+
+    <div class="vocab-block">
+      <h4>Emociones y estados</h4>
+      <table class="vocab-table">
+        <tr><td>Español</td><td>汉字</td><td>Pinyin</td><td></td></tr>
+        <tr><td>Contento/a</td><td>开心</td><td>kāixīn</td><td>lit. "corazón abierto"</td></tr>
+        <tr><td>Triste</td><td>难过</td><td>nánguò</td><td></td></tr>
+        <tr><td>Asustado/a</td><td>害怕</td><td>hàipà</td><td></td></tr>
+        <tr><td>Cansado/a</td><td>累了</td><td>lèi le</td><td></td></tr>
+        <tr><td>Está bien</td><td>没事</td><td>méishì</td><td>el más usado para consolar</td></tr>
+      </table>
+    </div>
+
+    <div class="vocab-block">
+      <h4>Naturaleza y animales</h4>
+      <table class="vocab-table">
+        <tr><td>Español</td><td>汉字</td><td>Pinyin</td><td>Onomatopeya bebé</td></tr>
+        <tr><td>Perrito</td><td>小狗</td><td>xiǎo gǒu</td><td>汪汪 (wāngwāng)</td></tr>
+        <tr><td>Gatito</td><td>小猫</td><td>xiǎo māo</td><td>喵喵 (miāomiāo)</td></tr>
+        <tr><td>Pajarito</td><td>小鸟</td><td>xiǎo niǎo</td><td>叽叽 (jījī)</td></tr>
+        <tr><td>Sol</td><td>太阳</td><td>tàiyáng</td><td></td></tr>
+        <tr><td>Luna</td><td>月亮</td><td>yuèliàng</td><td></td></tr>
+        <tr><td>Flor</td><td>花</td><td>huā</td><td></td></tr>
+        <tr><td>Árbol</td><td>树</td><td>shù</td><td></td></tr>
+        <tr><td>Agua</td><td>水</td><td>shuǐ</td><td></td></tr>
+      </table>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-label">Nota sobre el lenguaje bebé chino</div>
+      <p>El chino tiene una tradición muy rica de reduplicaciones para hablar con bebés: 宝宝 (bebé) 抱抱 (abrazo) 亲亲 (besito) 饭饭 (comidita). Estas formas dobles son más suaves y musicales — úsalas siempre con los bebés, suenan natural y cariñoso.</p>
+    </div>
+
+  </div>
+
+  <!-- PROGRESO -->
+  <div class="panel" id="panel-progreso">
+
+    <p style="font-size:0.82rem; color:var(--muted); margin-bottom:1.5rem;">Marca cada día que hayas estudiado. Tu progreso se guarda en este dispositivo.</p>
+
+    <div id="tracker-container"></div>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
+    </div>
+    <p class="progress-summary" id="progress-summary">0 días completados de 119 totales</p>
+
+    <hr class="divider">
+
+    <div class="tip-box zh">
+      <div class="tip-label">Hito · Semana 2</div>
+      <p>Los 4 tonos suenan distintos en tu oído aunque no los produzcas perfectamente todavía. Puedes leer pinyin básico y decir 10 frases de rutina.</p>
+    </div>
+
+    <div class="tip-box zh">
+      <div class="tip-label">Hito · Semana 5</div>
+      <p>Primeros 30 caracteres reconocidos. Puedes narrar la rutina de mañana completa en mandarín. La canción 小星星 de memoria.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-label">Hito · Semana 10</div>
+      <p>Narras un día completo del bebé en mandarín sin pausas largas. Conoces las canciones de cuna. Los tonos son más automáticos que conscientes.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-label">Cierre · Semana 17 → Semana 27</div>
+      <p>Lo que aprendiste no se borra con la hospitalización. Tus hijos escucharán mandarín desde el primer contacto contigo — y eso es exactamente suficiente.</p>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  function showTab(tab, btn) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('panel-' + tab).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function toggleDay(header) {
+    const body = header.nextElementSibling;
+    const toggle = header.querySelector('.day-toggle');
+    body.classList.toggle('open');
+    toggle.textContent = body.classList.contains('open') ? '▴' : '▾';
+  }
+
+  const WEEKS = 17;
+  const DAYS = ['L','M','X','J','V','S','D'];
+  const KEY = 'mandarin_tracker_v1';
+
+  let data = {};
+  try { const s = localStorage.getItem(KEY); if (s) data = JSON.parse(s); } catch(e) {}
+
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(data)); } catch(e) {} }
+
+  function build() {
+    const c = document.getElementById('tracker-container');
+    c.innerHTML = '';
+    for (let w = 1; w <= WEEKS; w++) {
+      const wd = document.createElement('div');
+      wd.className = 'tracker-week';
+      const wl = document.createElement('div');
+      wl.className = 'tracker-week-label';
+      wl.textContent = `Semana ${w}`;
+      wd.appendChild(wl);
+
+      const row = document.createElement('div');
+      row.className = 'tracker-row';
+      const lbl = document.createElement('div');
+      lbl.className = 'tracker-idioma';
+      lbl.textContent = '🇨🇳';
+      row.appendChild(lbl);
+
+      DAYS.forEach((d, i) => {
+        const key = `${w}-${i}`;
+        const dot = document.createElement('div');
+        dot.className = 'tracker-dot' + (data[key] ? ' done' : '');
+        dot.addEventListener('click', () => {
+          data[key] = !data[key];
+          dot.classList.toggle('done', data[key]);
+          save();
+          updateSummary();
+        });
+        row.appendChild(dot);
+      });
+
+      wd.appendChild(row);
+      c.appendChild(wd);
+    }
+    updateSummary();
+  }
+
+  function updateSummary() {
+    const done = Object.values(data).filter(Boolean).length;
+    const total = WEEKS * 7;
+    const pct = Math.round((done / total) * 100);
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('progress-summary').textContent =
+      `${done} días completados de ${total} totales · ${pct}% del plan`;
+  }
+
+  build();
+</script>
+</body>
+</html>
