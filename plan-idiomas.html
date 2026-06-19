@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan de Estudio · 한국어 & 日本語</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --ink: #1a1a2e;
+    --paper: #f7f5f0;
+    --korean: #c94040;
+    --japanese: #3a6ea5;
+    --accent-k: #f0e0e0;
+    --accent-j: #ddeaf7;
+    --muted: #888;
+    --border: #ddd8cc;
+    --week-bg: #faf9f6;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  header {
+    padding: 3rem 2rem 2rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header-scripts {
+    font-size: 4rem;
+    letter-spacing: 0.3em;
+    opacity: 0.07;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    pointer-events: none;
+    font-weight: 700;
+  }
+
+  .header-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-weight: 400;
+    line-height: 1.15;
+    position: relative;
+  }
+
+  header h1 span.k { color: var(--korean); }
+  header h1 span.j { color: var(--japanese); }
+
+  .header-sub {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+    position: relative;
+  }
+
+  /* TABS */
+  nav.tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    padding: 1.5rem 1rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    padding: 0.65rem 1.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .tab-btn.active-k { color: var(--korean); border-bottom-color: var(--korean); }
+  .tab-btn.active-j { color: var(--japanese); border-bottom-color: var(--japanese); }
+  .tab-btn.active-plan { color: var(--ink); border-bottom-color: var(--ink); }
+
+  /* CONTENT */
+  .content { max-width: 720px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* WEEK GRID */
+  .week-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+    margin-top: 2rem;
+  }
+  .week-label:first-child { margin-top: 0; }
+
+  .day-card {
+    background: var(--week-bg);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    margin-bottom: 0.6rem;
+    overflow: hidden;
+  }
+
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem 1.1rem;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .day-name {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    width: 80px;
+    flex-shrink: 0;
+  }
+
+  .day-pills {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+
+  .pill {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 20px;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+  }
+
+  .pill-k { background: var(--accent-k); color: var(--korean); }
+  .pill-j { background: var(--accent-j); color: var(--japanese); }
+  .pill-rest { background: #eee; color: var(--muted); }
+
+  .day-toggle {
+    font-size: 0.7rem;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  .day-body {
+    display: none;
+    padding: 0 1.1rem 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .day-body.open { display: block; }
+
+  .session {
+    margin-top: 0.9rem;
+  }
+
+  .session-title {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  .session-title.k { color: var(--korean); }
+  .session-title.j { color: var(--japanese); }
+
+  .session ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .session ul li {
+    font-size: 0.83rem;
+    padding: 0.2rem 0;
+    padding-left: 1rem;
+    position: relative;
+    color: #333;
+  }
+
+  .session ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--border);
+    font-size: 0.75rem;
+  }
+
+  .session-note {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+    font-style: italic;
+  }
+
+  /* RESOURCE CARDS */
+  .resource-section { margin-bottom: 2rem; }
+
+  .resource-section h3 {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .resource-section h3 span { color: var(--korean); }
+  .resource-section.j-section h3 span { color: var(--japanese); }
+
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .resource-card {
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 0.9rem 1rem;
+    background: var(--week-bg);
+  }
+
+  .resource-tag {
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+  }
+
+  .resource-name {
+    font-size: 0.88rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+
+  .resource-desc {
+    font-size: 0.75rem;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* VOCABULARY SECTION */
+  .vocab-block { margin-bottom: 1.75rem; }
+
+  .vocab-block h4 {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.4rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .vocab-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+  }
+
+  .vocab-table td {
+    padding: 0.35rem 0.5rem;
+    border-bottom: 1px solid #f0ece4;
+  }
+
+  .vocab-table tr:last-child td { border-bottom: none; }
+
+  .vocab-table td:first-child {
+    font-weight: 500;
+    width: 35%;
+  }
+
+  .vocab-table td:nth-child(2) {
+    color: var(--muted);
+    width: 30%;
+    font-size: 0.78rem;
+  }
+
+  .vocab-table td:nth-child(3) {
+    color: #555;
+    font-size: 0.8rem;
+  }
+
+  /* TIPS */
+  .tip-box {
+    border-left: 3px solid var(--border);
+    padding: 0.75rem 1rem;
+    margin: 1.25rem 0;
+    background: var(--week-bg);
+  }
+
+  .tip-box.k { border-left-color: var(--korean); }
+  .tip-box.j { border-left-color: var(--japanese); }
+
+  .tip-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.35rem;
+  }
+
+  .tip-box p { font-size: 0.83rem; color: #444; }
+
+  /* PROGRESS TRACKER */
+  .tracker-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.35rem;
+    margin-bottom: 1rem;
+  }
+
+  .tracker-label {
+    font-size: 0.62rem;
+    text-align: center;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .tracker-dot {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    cursor: pointer;
+    background: white;
+    transition: background 0.15s;
+  }
+
+  .tracker-dot.done-k { background: var(--korean); border-color: var(--korean); }
+  .tracker-dot.done-j { background: var(--japanese); border-color: var(--japanese); }
+  .tracker-dot.done-both {
+    background: linear-gradient(135deg, var(--korean) 50%, var(--japanese) 50%);
+    border-color: transparent;
+  }
+
+  .tracker-week { margin-bottom: 1.5rem; }
+
+  .tracker-week-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.08em;
+  }
+
+  .tracker-row {
+    display: grid;
+    grid-template-columns: 60px repeat(7, 1fr);
+    gap: 0.35rem;
+    align-items: center;
+    margin-bottom: 0.35rem;
+  }
+
+  .tracker-idioma {
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .progress-summary {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 1rem;
+  }
+
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
+  }
+
+  @media (max-width: 480px) {
+    .tab-btn { padding: 0.6rem 0.9rem; font-size: 0.78rem; }
+    header { padding: 2rem 1rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-scripts">한국어 日本語 한국어 日本語</div>
+  <p class="header-eyebrow">Crianza multilingüe · Plan personal</p>
+  <h1>Estudiar <span class="k">한국어</span> y <span class="j">日本語</span><br>para mis hijos</h1>
+  <p class="header-sub">17 semanas · hasta semana 27 de embarazo · 30–45 min por idioma al día</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active-plan" onclick="showTab('plan', this, 'active-plan')">Plan semanal</button>
+  <button class="tab-btn" onclick="showTab('recursos', this, 'active-plan')">Recursos</button>
+  <button class="tab-btn" onclick="showTab('vocab', this, 'active-plan')">Vocabulario bebé</button>
+  <button class="tab-btn" onclick="showTab('progreso', this, 'active-plan')">Mi progreso</button>
+</nav>
+
+<div class="content">
+
+  <!-- PLAN SEMANAL -->
+  <div class="panel active" id="panel-plan">
+
+    <p class="week-label">Mes 1–2 · Cimientos</p>
+
+    <!-- Lunes -->
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Lunes</span>
+        <div class="day-pills">
+          <span class="pill pill-k">한글 alfabeto</span>
+          <span class="pill pill-j">Escritura かな</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title k">🇰🇷 Coreano · 35 min</div>
+          <ul>
+            <li>Hangul: aprender vocales básicas (ㅏ ㅓ ㅗ ㅜ ㅡ ㅣ)</li>
+            <li>Practicar trazos con cuaderno o app Hangul Academy</li>
+            <li>Audio: pronunciar sílabas en voz alta</li>
+          </ul>
+          <p class="session-note">El hangul se domina en ~2 semanas si estudias las consonantes/vocales por grupos</p>
+        </div>
+        <div class="session">
+          <div class="session-title j">🇯🇵 Japonés · 35 min</div>
+          <ul>
+            <li>Repasar hiragana completo con escritura a mano</li>
+            <li>Enfoque en los que más confundes (ぬ ね ふ め)</li>
+            <li>App: Kanji Study · modo hiragana</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Martes -->
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Martes</span>
+        <div class="day-pills">
+          <span class="pill pill-k">Consonantes hangul</span>
+          <span class="pill pill-j">Katakana</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title k">🇰🇷 Coreano · 35 min</div>
+          <ul>
+            <li>Hangul: consonantes iniciales (ㄱ ㄴ ㄷ ㄹ ㅁ ㅂ ㅅ)</li>
+            <li>Formar sílabas simples: 가 나 다 라 마 바 사</li>
+            <li>Canción infantil coreana: "머리 어깨 무릎 발" (Cabeza, hombros, rodillas)</li>
+          </ul>
+        </div>
+        <div class="session">
+          <div class="session-title j">🇯🇵 Japonés · 35 min</div>
+          <ul>
+            <li>Katakana: filas ア行 カ行 サ行</li>
+            <li>Comparar con hiragana equivalente</li>
+            <li>Escribir palabras préstamo: アイス、バナナ、ミルク</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Miércoles -->
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Miércoles</span>
+        <div class="day-pills">
+          <span class="pill pill-k">Frases de bebé</span>
+          <span class="pill pill-j">Frases de bebé</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title k">🇰🇷 Coreano · 40 min</div>
+          <ul>
+            <li>Primera frase: "밥 먹자" (vamos a comer)</li>
+            <li>"자자" (a dormir) · "이리 와" (ven aquí)</li>
+            <li>Practicar en voz alta frente al espejo</li>
+            <li>YouTube: canal "Korean Moms" o "Korean with Kristin"</li>
+          </ul>
+          <p class="session-note">Los miércoles prioriza habla sobre escritura — practica como si le hablaras a un bebé</p>
+        </div>
+        <div class="session">
+          <div class="session-title j">🇯🇵 Japonés · 40 min</div>
+          <ul>
+            <li>"ごはんにしよう" (vamos a comer)</li>
+            <li>"ねんね" (a dormir, lenguaje bebé) · "おいで" (ven aquí)</li>
+            <li>Canción: "ぞうさん" (El elefante) — clásica japonesa para bebés</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Jueves -->
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Jueves</span>
+        <div class="day-pills">
+          <span class="pill pill-k">Escritura + repaso</span>
+          <span class="pill pill-j">Kanji básico</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title k">🇰🇷 Coreano · 35 min</div>
+          <ul>
+            <li>Consonantes finales (받침): ㄱ ㄴ ㅇ ㄹ</li>
+            <li>Escribir tu nombre en hangul</li>
+            <li>Repaso flashcards de lo aprendido (Anki o Quizlet)</li>
+          </ul>
+        </div>
+        <div class="session">
+          <div class="session-title j">🇯🇵 Japonés · 35 min</div>
+          <ul>
+            <li>Kanji N5: 日 月 火 水 木 金 土 (días de la semana)</li>
+            <li>Contexto: "¿Qué día es hoy?" — 今日は何曜日？</li>
+            <li>App: WaniKani (gratuito hasta nivel 3) o Kanji Study</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Viernes -->
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Viernes</span>
+        <div class="day-pills">
+          <span class="pill pill-k">Canciones infantiles</span>
+          <span class="pill pill-j">Cuentos simples</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title k">🇰🇷 Coreano · 40 min</div>
+          <ul>
+            <li>Aprender "아기상어" (Baby Shark en coreano — original)</li>
+            <li>"곰 세 마리" (Los tres osos) — clásica coreana infantil</li>
+            <li>Memorizar letra + practicar pronunciación</li>
+          </ul>
+          <p class="session-note">Los viernes son de input divertido — no te presiones con gramática</p>
+        </div>
+        <div class="session">
+          <div class="session-title j">🇯🇵 Japonés · 40 min</div>
+          <ul>
+            <li>Leer cuento simple: "おおきなかぶ" (El nabo gigante) en japonés</li>
+            <li>Subrayar vocabulario nuevo</li>
+            <li>Canal YouTube: "えほんであそぼ" (cuentos en japonés)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sábado -->
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Sábado</span>
+        <div class="day-pills">
+          <span class="pill pill-k">Input libre</span>
+          <span class="pill pill-j">Input libre</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title k">🇰🇷 Coreano · libre</div>
+          <ul>
+            <li>Ver un episodio de drama con subtítulos en coreano</li>
+            <li>O escuchar un podcast para principiantes (Talk To Me In Korean)</li>
+            <li>Sin presión de "estudiar" — solo exposición</li>
+          </ul>
+        </div>
+        <div class="session">
+          <div class="session-title j">🇯🇵 Japonés · libre</div>
+          <ul>
+            <li>Ver anime infantil: Shimajirou, Doraemon, Anpanman</li>
+            <li>Intentar entender sin subtítulos aunque sea un 20%</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Domingo -->
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Domingo</span>
+        <div class="day-pills">
+          <span class="pill pill-rest">Repaso + descanso</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title k">Repaso semanal · 20 min</div>
+          <ul>
+            <li>Repasar flashcards de la semana (ambos idiomas)</li>
+            <li>Escribir 3 frases que usarías con tu bebé</li>
+            <li>Anotar qué fue difícil para enfocarte la próxima semana</li>
+          </ul>
+          <p class="session-note">El domingo es corto a propósito — el cerebro consolida mientras descansa</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+    <p class="week-label">Semanas 6–7 · Mes 3 · Gramática para hablar</p>
+
+    <!-- Semana 6 Lunes -->
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Lunes</span>
+        <div class="day-pills">
+          <span class="pill pill-k">Partículas 은/는</span>
+          <span class="pill pill-j">Partícula は · を</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title k">🇰🇷 Coreano · 40 min</div>
+          <ul>
+            <li>Partículas 은/는 (tema) e 이/가 (sujeto): diferencia y uso</li>
+            <li>Frases: "이게 뭐야?" (¿qué es esto?) — señalando objetos del hogar</li>
+            <li>Práctica: nombrar 10 objetos en casa con partícula correcta</li>
+          </ul>
+          <p class="session-note">Desde el mes 3 el foco es construir frases completas, no solo palabras sueltas</p>
+        </div>
+        <div class="session">
+          <div class="session-title j">🇯🇵 Japonés · 40 min</div>
+          <ul>
+            <li>Repasar partícula は (wa) vs が (ga) en contexto infantil</li>
+            <li>Partícula を en frases de acción: "りんごを食べよう" (comamos una manzana)</li>
+            <li>Kanji N5: 食 飲 見 聞 (verbos de los sentidos)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semana 6 Martes -->
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Martes</span>
+        <div class="day-pills">
+          <span class="pill pill-k">Colores y números</span>
+          <span class="pill pill-j">Colores y números</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title k">🇰🇷 Coreano · 40 min</div>
+          <ul>
+            <li>Colores: 빨간색 (rojo) 파란색 (azul) 노란색 (amarillo) 초록색 (verde) 하얀색 (blanco)</li>
+            <li>Números nativos coreanos (하나 둘 셋 넷 다섯) vs sino-coreanos (일 이 삼 사 오)</li>
+            <li>Juego: "빨간 공 어디 있어?" (¿dónde está la pelota roja?)</li>
+          </ul>
+        </div>
+        <div class="session">
+          <div class="session-title j">🇯🇵 Japonés · 40 min</div>
+          <ul>
+            <li>Colores: あか あお き みどり しろ くろ — con kanji 赤 青 黄 緑</li>
+            <li>Números 1–20 y uso con contadores simples (ひとつ ふたつ みっつ)</li>
+            <li>Canción: "いちじく にんじん さんしょ しいたけ" — rima de números</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semana 6 Miércoles -->
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Miércoles</span>
+        <div class="day-pills">
+          <span class="pill pill-k">Frases de consuelo</span>
+          <span class="pill pill-j">Frases de consuelo</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title k">🇰🇷 Coreano · 40 min</div>
+          <ul>
+            <li>"괜찮아, 엄마 여기 있어" (Está bien, mamá está aquí)</li>
+            <li>"울지 마, 사랑해" (No llores, te quiero)</li>
+            <li>"아야? 어디가 아파?" (¿Te duele? ¿Dónde te duele?)</li>
+            <li>Practicar con entonación suave y lenta, como se le habla a un bebé</li>
+          </ul>
+        </div>
+        <div class="session">
+          <div class="session-title j">🇯🇵 Japonés · 40 min</div>
+          <ul>
+            <li>"だいじょうぶ、ママここにいるよ" (Está bien, mamá está aquí)</li>
+            <li>"なかないで、だいすきだよ" (No llores, te quiero mucho)</li>
+            <li>"いたい？どこ？" (¿Te duele? ¿Dónde?)</li>
+            <li>Entonación: el japonés materno tiene un pitch muy musical — escucha videos de mamás japonesas</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semana 6 Jueves -->
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Jueves</span>
+        <div class="day-pills">
+          <span class="pill pill-k">Verbos cotidianos</span>
+          <span class="pill pill-j">Kanji N5 · bloque 2</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title k">🇰🇷 Coreano · 40 min</div>
+          <ul>
+            <li>Verbos esenciales: 먹다 (comer) 자다 (dormir) 놀다 (jugar) 걷다 (caminar) 울다 (llorar)</li>
+            <li>Conjugar en forma informal presente: 먹어 자 놀아 걸어 울어</li>
+            <li>Flashcards con imagen + verbo en hangul</li>
+          </ul>
+        </div>
+        <div class="session">
+          <div class="session-title j">🇯🇵 Japonés · 40 min</div>
+          <ul>
+            <li>Kanji N5: 人 大 小 上 下 中 (tamaños y posiciones)</li>
+            <li>Uso en frases: "大きいね！" (¡Qué grande!) "小さいね" (¡Qué chiquito!)</li>
+            <li>Leer y escribir 5 nuevos kanji con orden de trazos</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semana 6 Viernes -->
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Viernes</span>
+        <div class="day-pills">
+          <span class="pill pill-k">Cuento en voz alta</span>
+          <span class="pill pill-j">Cuento en voz alta</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title k">🇰🇷 Coreano · 45 min</div>
+          <ul>
+            <li>Leer en voz alta "아기 돼지 삼형제" (Los tres cerditos) en coreano</li>
+            <li>Grabarte leyendo — escuchar tu propia pronunciación</li>
+            <li>Identificar palabras desconocidas y agregarlas a Anki</li>
+          </ul>
+          <p class="session-note">Grabarte es incómodo pero muy efectivo — el oído propio es el mejor corrector</p>
+        </div>
+        <div class="session">
+          <div class="session-title j">🇯🇵 Japonés · 45 min</div>
+          <ul>
+            <li>Leer "三びきのこぶた" (Los tres cerditos en japonés) — versión fácil</li>
+            <li>Identificar todos los kanji N5 que aparecen</li>
+            <li>Practicar la voz narradora suave: contar cuentos tiene su propia musicalidad</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sábado / Domingo semana 6 -->
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Sáb–Dom</span>
+        <div class="day-pills">
+          <span class="pill pill-rest">Immersión + repaso</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title k">🇰🇷 Sábado libre</div>
+          <ul>
+            <li>Drama coreano con subtítulos en coreano (Reply 1988, Our Blues — lenguaje familiar muy natural)</li>
+            <li>Anotar 3 frases que podrías decirle a tu bebé</li>
+          </ul>
+        </div>
+        <div class="session">
+          <div class="session-title j">🇯🇵 Domingo · repaso</div>
+          <ul>
+            <li>Repasar toda la semana en 20 min con flashcards</li>
+            <li>Escribir tu "diario de mamá" imaginario: una rutina de día completo en los dos idiomas</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+    <p class="week-label">Semanas 8–10 · Mes 4 · Fluidez de rutina</p>
+
+    <div class="tip-box k">
+      <div class="tip-label">Coreano · Objetivo mes 4</div>
+      <p>Esta etapa consolida la gramática básica y expande el vocabulario temático hacia la crianza real: el cuerpo del bebé, la alimentación, el sueño, el juego. El objetivo es poder hablar sin pausar a buscar palabras en rutinas concretas.</p>
+    </div>
+
+    <!-- Semana 8 Lunes -->
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Lunes</span>
+        <div class="day-pills">
+          <span class="pill pill-k">Alimentación del bebé</span>
+          <span class="pill pill-j">Alimentación del bebé</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title k">🇰🇷 Coreano · 40 min</div>
+          <ul>
+            <li>"젖 먹자" / "수유하자" (vamos a lactar) — lenguaje de lactancia</li>
+            <li>"맘마 먹자" (vamos a comer papilla) — lenguaje bebé para comida</li>
+            <li>Vocabulario: 우유 (leche) 주스 (jugo) 물 (agua) 과일 (fruta) 야채 (verdura)</li>
+            <li>Práctica: describir una comida completa del bebé en voz alta</li>
+          </ul>
+        </div>
+        <div class="session">
+          <div class="session-title j">🇯🇵 Japonés · 40 min</div>
+          <ul>
+            <li>"おっぱいのむ？" (¿quieres tomar pecho?) — lenguaje suave de lactancia</li>
+            <li>"もぐもぐしよう" (vamos a masticar) — onomatopeya del comer</li>
+            <li>Vocabulario: ぎゅうにゅう (leche) くだもの (fruta) やさい (verdura) おかゆ (papilla de arroz)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semana 8 Martes -->
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Martes</span>
+        <div class="day-pills">
+          <span class="pill pill-k">Rutina de sueño</span>
+          <span class="pill pill-j">Canciones de cuna</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title k">🇰🇷 Coreano · 40 min</div>
+          <ul>
+            <li>Vocabulario del sueño: 졸려 (tiene sueño) 자장자장 (arrorró) 꿈 (sueño/dream) 베개 (almohada)</li>
+            <li>Frase completa: "졸려? 자자, 엄마가 옆에 있을게" (¿Tienes sueño? A dormir, mamá estará a tu lado)</li>
+            <li>Canción de cuna: "자장가" — aprender letra completa</li>
+          </ul>
+        </div>
+        <div class="session">
+          <div class="session-title j">🇯🇵 Japonés · 40 min</div>
+          <ul>
+            <li>Canción de cuna: "ねんねんころりよ おころりよ" — letra y melodía</li>
+            <li>"もうねむい？" (¿ya tienes sueño?) "いい子ね" (qué buen niño/niña)</li>
+            <li>Vocabulario: まくら (almohada) もうふ (manta) ゆめ (sueño/dream)</li>
+          </ul>
+          <p class="session-note">Las canciones de cuna son el vocabulario más valioso: las repetirás miles de veces</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semana 8 Miércoles -->
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Miércoles</span>
+        <div class="day-pills">
+          <span class="pill pill-k">Juego y exploración</span>
+          <span class="pill pill-j">Juego y exploración</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title k">🇰🇷 Coreano · 40 min</div>
+          <ul>
+            <li>Frases de juego: "같이 놀자!" (¡juguemos juntos!) "던져봐" (lánzalo) "잡았다!" (¡lo agarré!)</li>
+            <li>Vocabulario: 공 (pelota) 장난감 (juguete) 블록 (bloques) 책 (libro) 인형 (muñeco)</li>
+            <li>Role-play: narrar en voz alta como si jugaras con tu bebé ahora</li>
+          </ul>
+        </div>
+        <div class="session">
+          <div class="session-title j">🇯🇵 Japonés · 40 min</div>
+          <ul>
+            <li>"いっしょにあそぼう！" (¡juguemos juntos!) "なげてみて" (intenta lanzarlo)</li>
+            <li>Vocabulario: ボール (pelota) おもちゃ (juguete) えほん (libro ilustrado) ぬいぐるみ (peluche)</li>
+            <li>Kanji: 本 (libro) 子 (niño) 手 (mano) 目 (ojo) — los más frecuentes en libros infantiles</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semana 8 Jueves -->
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Jueves</span>
+        <div class="day-pills">
+          <span class="pill pill-k">Preguntas con bebé</span>
+          <span class="pill pill-j">Preguntas con bebé</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title k">🇰🇷 Coreano · 40 min</div>
+          <ul>
+            <li>Preguntas clave: 이게 뭐야? (¿qué es esto?) 어디 있어? (¿dónde está?) 누구야? (¿quién es?)</li>
+            <li>Juego de esconder: "까꿍!" (¡cucú!) — clásico universal en coreano</li>
+            <li>Repasar 30 palabras de vocabulario bebé con Anki</li>
+          </ul>
+        </div>
+        <div class="session">
+          <div class="session-title j">🇯🇵 Japonés · 40 min</div>
+          <ul>
+            <li>Preguntas: これなに？(¿qué es esto?) どこにある？(¿dónde está?) だれ？(¿quién?)</li>
+            <li>"いないいないばあ！" (¡cucú! — versión japonesa)</li>
+            <li>Leer libro infantil bilingüe japonés-español si está disponible en biblioteca digital</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semana 8-10 Viernes -->
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Viernes</span>
+        <div class="day-pills">
+          <span class="pill pill-k">Simulacro de día</span>
+          <span class="pill pill-j">Simulacro de día</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title k">🇰🇷 Coreano · 45 min</div>
+          <ul>
+            <li>Narrar en voz alta un día completo imaginario con tu bebé, solo en coreano</li>
+            <li>Despertar → desayuno → baño → paseo → juego → siesta → cena → dormir</li>
+            <li>Objetivo: hacerlo sin pausas largas. Lo que no sepas, anótalo para la próxima semana</li>
+          </ul>
+          <p class="session-note">Este ejercicio semanal es el más honesto indicador de tu progreso real</p>
+        </div>
+        <div class="session">
+          <div class="session-title j">🇯🇵 Japonés · 45 min</div>
+          <ul>
+            <li>Mismo ejercicio en japonés: narrar el día completo del bebé sin parar</li>
+            <li>Grabar el audio para comparar con el del mes anterior</li>
+            <li>Escuchar 1 episodio de Shimajirou prestando atención al vocabulario de rutinas</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sáb-Dom mes 4 -->
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Sáb–Dom</span>
+        <div class="day-pills">
+          <span class="pill pill-rest">Descanso activo</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title k">Sábado · input cultural</div>
+          <ul>
+            <li>Playlist: canciones infantiles coreanas de Pinkfong y Kongsuni — sin presión de estudiar</li>
+            <li>Nota: si estás cansada del embarazo este día, solo escuchar en segundo plano está bien</li>
+          </ul>
+        </div>
+        <div class="session">
+          <div class="session-title j">Domingo · repaso suave</div>
+          <ul>
+            <li>Repasar flashcards de la semana (15 min máximo)</li>
+            <li>Escribir 5 frases nuevas que quieras decirle a tus bebés cuando nazcan</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+    <p class="week-label">Semanas 11–12 · Mes 5 · Hacia la semana 27</p>
+
+    <div class="tip-box">
+      <div class="tip-label">Contexto de embarazo</div>
+      <p>En las semanas finales del plan (semana 22–27 de embarazo) es posible que la energía fluctúe más. El plan de estas semanas es intencionalmente más flexible: prioriza el input (escuchar, ver) sobre el output (escribir, memorizar) cuando el cuerpo lo necesite.</p>
+    </div>
+
+    <!-- Semana 11 Lunes -->
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Lunes</span>
+        <div class="day-pills">
+          <span class="pill pill-k">Bebés prematuros · UCIN</span>
+          <span class="pill pill-j">Vocabulario hospital</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title k">🇰🇷 Coreano · 35 min</div>
+          <ul>
+            <li>Vocabulario especial: 인큐베이터 (incubadora) 모유 (leche materna) 캥거루 케어 (cuidado canguro)</li>
+            <li>"엄마 여기 있어, 잘 자라고 있어" (Mamá está aquí, estás creciendo bien)</li>
+            <li>"사랑해, 강해질 거야" (Te quiero, vas a ser fuerte)</li>
+          </ul>
+          <p class="session-note">Como MCMA, podrías hablarles a tus bebés en UCIN desde el primer día — este vocabulario importa</p>
+        </div>
+        <div class="session">
+          <div class="session-title j">🇯🇵 Japonés · 35 min</div>
+          <ul>
+            <li>Frases para UCIN: "ママここにいるよ" (Mamá está aquí) "がんばってね" (échale ganas)</li>
+            <li>"ちいさくても、つよいよ" (Aunque sean pequeños, son fuertes)</li>
+            <li>Repasar kanji de la semana anterior — sesión tranquila</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semana 11 Martes-Jueves -->
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Mar–Jue</span>
+        <div class="day-pills">
+          <span class="pill pill-k">Consolidación</span>
+          <span class="pill pill-j">Consolidación</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title k">🇰🇷 Coreano · plan libre</div>
+          <ul>
+            <li>Martes: repaso completo de vocabulario del cuerpo + emociones con Anki</li>
+            <li>Miércoles: practicar todas las canciones aprendidas en orden</li>
+            <li>Jueves: leer un cuento completo sin ayuda — anotar solo lo que no entiendas</li>
+          </ul>
+        </div>
+        <div class="session">
+          <div class="session-title j">🇯🇵 Japonés · plan libre</div>
+          <ul>
+            <li>Martes: repaso kanji N5 — los 80 kanji, test de reconocimiento</li>
+            <li>Miércoles: escuchar 2 episodios de Shimajirou entendiendo al menos el 50%</li>
+            <li>Jueves: escribir a mano una carta corta a tus bebés, en japonés</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semana 11-12 Viernes -->
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Viernes</span>
+        <div class="day-pills">
+          <span class="pill pill-k">Carta a mis bebés</span>
+          <span class="pill pill-j">Carta a mis bebés</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title k">🇰🇷 Coreano · 45 min</div>
+          <ul>
+            <li>Escribir una carta corta a tus bebés en coreano — lo que quieres contarles cuando crezcan</li>
+            <li>Usar todo el vocabulario aprendido: nombre, amor, sueños, el mundo que los espera</li>
+            <li>Guardarlo como recuerdo — y como evidencia de cuánto aprendiste</li>
+          </ul>
+          <p class="session-note">Este es el ejercicio más personal de todo el plan. No hay respuesta incorrecta</p>
+        </div>
+        <div class="session">
+          <div class="session-title j">🇯🇵 Japonés · 45 min</div>
+          <ul>
+            <li>Misma carta en japonés — puedes usar los mismos sentimientos, traducidos</li>
+            <li>Incluir al menos 10 kanji aprendidos</li>
+            <li>Leer en voz alta, como si ya estuvieras en la UCIN hablándoles</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semanas finales -->
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-name">Sáb–Dom</span>
+        <div class="day-pills">
+          <span class="pill pill-rest">Cierre del plan</span>
+        </div>
+        <span class="day-toggle">▾</span>
+      </div>
+      <div class="day-body">
+        <div class="session">
+          <div class="session-title k">Semanas 12–17 · ritmo libre</div>
+          <ul>
+            <li>El plan estructurado termina en semana 12. Las semanas 13–17 son de mantenimiento</li>
+            <li>Mantener Anki activo (10 min/día) y escucha pasiva (canciones, dramas, Shimajirou)</li>
+            <li>Si la hospitalización llega antes de semana 27 — el aprendizaje ya está en ti</li>
+          </ul>
+          <p class="session-note">Lo que aprendas antes de la hospitalización no se borra — y tus bebés lo escucharán desde el primer día</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RECURSOS -->
+  <div class="panel" id="panel-recursos">
+
+    <div class="resource-section">
+      <h3><span>한국어</span> · Recursos Coreano</h3>
+      <div class="resource-grid">
+        <div class="resource-card">
+          <div class="resource-tag">App · Alfabeto</div>
+          <div class="resource-name">Hangul Academy</div>
+          <div class="resource-desc">Aprende hangul en orden lógico con audio nativo. Gratis.</div>
+        </div>
+        <div class="resource-card">
+          <div class="resource-tag">Web · Curso</div>
+          <div class="resource-name">Talk To Me In Korean</div>
+          <div class="resource-desc">TTMIK — el recurso más completo para principiantes. Tiene libros, podcast y lecciones gratuitas.</div>
+        </div>
+        <div class="resource-card">
+          <div class="resource-tag">YouTube</div>
+          <div class="resource-name">Korean with Kristin</div>
+          <div class="resource-desc">Lecciones cortas, claras y con contexto de vida cotidiana.</div>
+        </div>
+        <div class="resource-card">
+          <div class="resource-tag">App · Flashcards</div>
+          <div class="resource-name">Anki</div>
+          <div class="resource-desc">Repetición espaciada. Descarga el mazo "Korean Vocabulary for Babies" o créalo tú.</div>
+        </div>
+        <div class="resource-card">
+          <div class="resource-tag">YouTube · Infantil</div>
+          <div class="resource-name">Pinkfong 핑크퐁</div>
+          <div class="resource-desc">Canciones infantiles coreanas originales — las mismas que escucharán tus hijos.</div>
+        </div>
+        <div class="resource-card">
+          <div class="resource-tag">App</div>
+          <div class="resource-name">Duolingo Coreano</div>
+          <div class="resource-desc">Para mantener el hábito diario, aunque no como fuente principal.</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <div class="resource-section j-section">
+      <h3><span>日本語</span> · Recursos Japonés</h3>
+      <div class="resource-grid">
+        <div class="resource-card">
+          <div class="resource-tag">App · Kanji</div>
+          <div class="resource-name">Kanji Study</div>
+          <div class="resource-desc">La mejor app para escritura de kanji a mano. Orden de trazos y quiz. ~4 USD.</div>
+        </div>
+        <div class="resource-card">
+          <div class="resource-tag">Web · Kanji</div>
+          <div class="resource-name">WaniKani</div>
+          <div class="resource-desc">Sistema de kanji por mnemonics. Gratuito hasta nivel 3 (150+ kanji y 300+ vocabulario).</div>
+        </div>
+        <div class="resource-card">
+          <div class="resource-tag">YouTube · Infantil</div>
+          <div class="resource-name">しまじろう (Shimajirou)</div>
+          <div class="resource-desc">El programa infantil japonés por excelencia. Lenguaje sencillo, perfecto para bebés.</div>
+        </div>
+        <div class="resource-card">
+          <div class="resource-tag">YouTube · Cuentos</div>
+          <div class="resource-name">えほんであそぼ</div>
+          <div class="resource-desc">Cuentos clásicos japoneses narrados en voz alta. Ideal para entrenarte en contar historias.</div>
+        </div>
+        <div class="resource-card">
+          <div class="resource-tag">Libro</div>
+          <div class="resource-name">Genki I (2ª ed.)</div>
+          <div class="resource-desc">El mejor libro de gramática japonesa para nivel básico-intermedio. Para cuando quieras profundizar estructura.</div>
+        </div>
+        <div class="resource-card">
+          <div class="resource-tag">App · Audio</div>
+          <div class="resource-name">JapanesePod101</div>
+          <div class="resource-desc">Lecciones en audio organizadas por nivel. Refuerza el oído que ya tienes entrenado.</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <div class="tip-box">
+      <div class="tip-label">Consejo de entorno</div>
+      <p>Cambia el idioma de tu teléfono a japonés o coreano por semanas alternas. La exposición pasiva constante es más poderosa de lo que parece.</p>
+    </div>
+
+    <div class="tip-box j">
+      <div class="tip-label">Para la escritura japonesa</div>
+      <p>Como ya tienes base oral en japonés, tu prioridad es consolidar katakana y luego kanji N5. No necesitas dominar los 2136 jōyō kanji — con los 80 del N5 ya puedes leer libros infantiles cómodamente.</p>
+    </div>
+
+  </div>
+
+  <!-- VOCABULARIO BEBÉ -->
+  <div class="panel" id="panel-vocab">
+
+    <div class="tip-box k">
+      <div class="tip-label">Cómo usar esta sección</div>
+      <p>Este es el vocabulario que más usarás con tus hijos en los primeros años. Aprende estas palabras y frases antes que gramática compleja.</p>
+    </div>
+
+    <div class="vocab-block">
+      <h4>Rutinas diarias</h4>
+      <table class="vocab-table">
+        <tr><td>Español</td><td>한국어</td><td>日本語</td></tr>
+        <tr><td>Vamos a comer</td><td>밥 먹자</td><td>ごはんにしよう</td></tr>
+        <tr><td>A dormir</td><td>자자 / 자자요</td><td>ねんねしよう</td></tr>
+        <tr><td>Ven aquí</td><td>이리 와</td><td>おいで</td></tr>
+        <tr><td>Baño</td><td>목욕하자</td><td>おふろにはいろう</td></tr>
+        <tr><td>Vamos a salir</td><td>나가자</td><td>おそとにでよう</td></tr>
+        <tr><td>¿Tienes hambre?</td><td>배고파?</td><td>おなかすいた？</td></tr>
+        <tr><td>¿Tienes frío?</td><td>추워?</td><td>さむい？</td></tr>
+        <tr><td>Te quiero mucho</td><td>많이 사랑해</td><td>だいすきだよ</td></tr>
+        <tr><td>Bien hecho</td><td>잘했어</td><td>よくできたね</td></tr>
+        <tr><td>No / No hagas eso</td><td>안 돼</td><td>だめよ</td></tr>
+      </table>
+    </div>
+
+    <div class="vocab-block">
+      <h4>Partes del cuerpo</h4>
+      <table class="vocab-table">
+        <tr><td>Español</td><td>한국어</td><td>日本語</td></tr>
+        <tr><td>Cabeza</td><td>머리</td><td>あたま</td></tr>
+        <tr><td>Ojos</td><td>눈</td><td>め</td></tr>
+        <tr><td>Nariz</td><td>코</td><td>はな</td></tr>
+        <tr><td>Boca</td><td>입</td><td>くち</td></tr>
+        <tr><td>Orejas</td><td>귀</td><td>みみ</td></tr>
+        <tr><td>Manos</td><td>손</td><td>て</td></tr>
+        <tr><td>Pies</td><td>발</td><td>あし</td></tr>
+        <tr><td>Barriga</td><td>배</td><td>おなか</td></tr>
+      </table>
+    </div>
+
+    <div class="vocab-block">
+      <h4>Emociones y estados</h4>
+      <table class="vocab-table">
+        <tr><td>Español</td><td>한국어</td><td>日本語</td></tr>
+        <tr><td>Contento/a</td><td>기뻐</td><td>うれしい</td></tr>
+        <tr><td>Triste</td><td>슬퍼</td><td>かなしい</td></tr>
+        <tr><td>Asustado/a</td><td>무서워</td><td>こわい</td></tr>
+        <tr><td>Cansado/a</td><td>피곤해</td><td>つかれた</td></tr>
+        <tr><td>Tranquilo/a</td><td>괜찮아</td><td>だいじょうぶ</td></tr>
+      </table>
+    </div>
+
+    <div class="vocab-block">
+      <h4>Naturaleza y animales (para paseos)</h4>
+      <table class="vocab-table">
+        <tr><td>Español</td><td>한국어</td><td>日本語</td></tr>
+        <tr><td>Perro</td><td>강아지 (cachorro)</td><td>いぬ / わんわん</td></tr>
+        <tr><td>Gato</td><td>고양이</td><td>ねこ / にゃんにゃん</td></tr>
+        <tr><td>Pájaro</td><td>새</td><td>とり / ぴーぴー</td></tr>
+        <tr><td>Árbol</td><td>나무</td><td>き</td></tr>
+        <tr><td>Flor</td><td>꽃</td><td>はな</td></tr>
+        <tr><td>Sol</td><td>해 / 태양</td><td>おひさま</td></tr>
+        <tr><td>Agua</td><td>물</td><td>みず</td></tr>
+      </table>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-label">Nota sobre lenguaje bebé</div>
+      <p>En japonés y coreano existe vocabulario específico para hablar con bebés (onomatopeyas, diminutivos). En la tabla aparece la versión bebé entre paréntesis cuando aplica. Los bebés aprenden mejor las formas suaves y musicales primero.</p>
+    </div>
+
+  </div>
+
+  <!-- PROGRESO -->
+  <div class="panel" id="panel-progreso">
+
+    <p style="font-size:0.83rem; color:var(--muted); margin-bottom:1.5rem;">Marca cada día que hayas estudiado. Haz clic una vez para coreano 🇰🇷, dos veces para japonés 🇯🇵, tres veces para ambos, cuatro para resetear.</p>
+
+    <div id="tracker-container"></div>
+
+    <p class="progress-summary" id="progress-summary"></p>
+
+    <hr class="section-divider">
+
+    <div class="tip-box k">
+      <div class="tip-label">Hito · Semana 2</div>
+      <p>Deberías poder leer el hangul fonéticamente aunque no entiendas las palabras. Si no, dedica 5 min más por día al alfabeto esta semana.</p>
+    </div>
+
+    <div class="tip-box j">
+      <div class="tip-label">Hito · Semana 4</div>
+      <p>Katakana completo memorizado y kanji N5 parcialmente reconocidos. Tu escritura a mano debería ser legible. En coreano: primeras frases completas de rutina.</p>
+    </div>
+
+    <div class="tip-box k">
+      <div class="tip-label">Hito · Semana 6–7</div>
+      <p>Puedes construir frases con partículas correctas en coreano. En japonés: lees cuentos simples sin detenerte en cada palabra.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-label">Hito · Semana 10</div>
+      <p>Puedes narrar un día completo del bebé en ambos idiomas sin pausas largas. Conoces las canciones de cuna y los cuentos clásicos de memoria.</p>
+    </div>
+
+    <div class="tip-box j">
+      <div class="tip-label">Hito · Semana 12</div>
+      <p>80 kanji N5 reconocidos. Puedes leer libros infantiles simples. En coreano: vocabulario de UCIN y frases de contacto emocional listas para el primer día.</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-label">Cierre · Semana 17 → Semana 27</div>
+      <p>Lo que llegues a aprender antes de la hospitalización ya está incorporado. Tus bebés escucharán coreano y japonés desde el primer momento — y eso es exactamente suficiente.</p>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  // TAB SWITCHING
+  function showTab(tab, btn, activeClass) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      b.classList.remove('active-k', 'active-j', 'active-plan');
+    });
+    document.getElementById('panel-' + tab).classList.add('active');
+    btn.classList.add(activeClass);
+  }
+
+  // DAY TOGGLE
+  function toggleDay(header) {
+    const body = header.nextElementSibling;
+    const toggle = header.querySelector('.day-toggle');
+    body.classList.toggle('open');
+    toggle.textContent = body.classList.contains('open') ? '▴' : '▾';
+  }
+
+  // TRACKER
+  const WEEKS = 17;
+  const DAYS = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+  const STORAGE_KEY = 'idiomas_tracker_v1';
+
+  let trackerData = {};
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) trackerData = JSON.parse(saved);
+  } catch(e) {}
+
+  function saveTracker() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(trackerData)); } catch(e) {}
+  }
+
+  function buildTracker() {
+    const container = document.getElementById('tracker-container');
+    container.innerHTML = '';
+    let totalK = 0, totalJ = 0, totalBoth = 0;
+
+    for (let w = 1; w <= WEEKS; w++) {
+      const weekDiv = document.createElement('div');
+      weekDiv.className = 'tracker-week';
+
+      const wLabel = document.createElement('div');
+      wLabel.className = 'tracker-week-label';
+      wLabel.textContent = `Semana ${w}`;
+      weekDiv.appendChild(wLabel);
+
+      ['🇰🇷', '🇯🇵'].forEach((flag, lang) => {
+        const row = document.createElement('div');
+        row.className = 'tracker-row';
+
+        const label = document.createElement('div');
+        label.className = 'tracker-idioma';
+        label.textContent = flag;
+        row.appendChild(label);
+
+        DAYS.forEach((day, d) => {
+          const key = `${w}-${d}-${lang}`;
+          const dot = document.createElement('div');
+          dot.className = 'tracker-dot';
+          if (trackerData[key]) dot.classList.add(lang === 0 ? 'done-k' : 'done-j');
+
+          dot.addEventListener('click', () => {
+            trackerData[key] = !trackerData[key];
+            dot.classList.toggle(lang === 0 ? 'done-k' : 'done-j', trackerData[key]);
+            saveTracker();
+            updateSummary();
+          });
+
+          row.appendChild(dot);
+        });
+
+        weekDiv.appendChild(row);
+      });
+
+      container.appendChild(weekDiv);
+    }
+
+    updateSummary();
+  }
+
+  function updateSummary() {
+    let k = 0, j = 0;
+    Object.entries(trackerData).forEach(([key, val]) => {
+      if (!val) return;
+      if (key.endsWith('-0')) k++;
+      if (key.endsWith('-1')) j++;
+    });
+    const total = WEEKS * 7;
+    const pct = Math.round(((k + j) / (total * 2)) * 100);
+    document.getElementById('progress-summary').textContent =
+      `Coreano: ${k}/${total} días · Japonés: ${j}/${total} días · ${pct}% del plan completado`;
+  }
+
+  buildTracker();
+</script>
+</body>
+</html>
